@@ -17,6 +17,7 @@ export function difineReactive(target, key, value) {
     },
     set(newValue) {
       if (newValue === value) return;
+      observe(newValue); // 对新值进行代理
       value = newValue;
     },
   });
