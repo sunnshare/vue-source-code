@@ -1,4 +1,5 @@
 import { newArrayProto } from "./array";
+import Dep from "./dep";
 class Observer {
   constructor(data) {
     Object.defineProperty(data, "__ob__", {
@@ -27,14 +28,19 @@ class Observer {
 
 export function difineReactive(target, key, value) {
   observe(value); // 递归，深层属性劫持
+  let dep = new Dep();
   Object.defineProperty(target, key, {
     get() {
+      if (Dep.target) {
+        dep.depend(); // 让属性收集器记住当前   Watcher
+      }
       return value;
     },
     set(newValue) {
       if (newValue === value) return;
       observe(newValue); // 对新值进行代理
       value = newValue;
+      dep.notify(); // 通知更新
     },
   });
 }

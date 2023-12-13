@@ -1,5 +1,7 @@
 import { createElementVNode, createTextVNode } from "./vdom/index";
 import { patch } from "./vdom/patch";
+import Watcher from "./observe/watch";
+
 export function initLifeCycle(Vue) {
   Vue.prototype._update = function (vnode) {
     const vm = this;
@@ -25,7 +27,11 @@ export function mountComponent(vm, el) {
   vm.$el = el;
   // 1.调用render 方法产生虚拟节点，虚拟DOM
 
-  vm._update(vm._render());
+  const updateComponent = () => {
+    vm._update(vm._render());
+  };
+
+  new Watcher(vm, updateComponent, true); // true 用于表示它是一个渲染 Watcher
 
   // 2.根据虚拟DOM产生真实DOM
 
