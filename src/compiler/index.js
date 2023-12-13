@@ -63,4 +63,8 @@ export function compileToFunction(template) {
   let ast = parseHTML(template);
   // 2.生成render方法
   let code = codegen(ast);
+  // 模板引擎实现原理：with + new Function
+  code = `with(this){return ${code}}`;
+  let render = new Function(code);
+  return render;
 }
