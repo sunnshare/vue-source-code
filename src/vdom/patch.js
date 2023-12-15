@@ -2,7 +2,7 @@ export function createElm(vnode) {
   let { tag, data, children, text } = vnode;
   if (typeof tag === "string") {
     vnode.el = document.createElement(tag);
-    patchProps(vnode.el, {}, data);
+    patchProps(vnode.el, data);
     children.forEach((child) => {
       vnode.el.appendChild(createElm(child));
     });

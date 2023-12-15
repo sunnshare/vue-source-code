@@ -26,6 +26,7 @@ methods.forEach((method) => {
     if (inserted) {
       ob.observeArray(inserted); // 对新增的内容再次进行观测
     }
+    ob.dep.notify(); // 数组变化通知对应watcher
     return result;
   };
 });
