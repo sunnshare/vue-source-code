@@ -4,16 +4,28 @@ let id = 0;
 
 // 不同组件有不同的watcher
 class Watcher {
-  constructor(vm, exprOrFn, options) {
+  constructor(vm, exprOrFn, options, cb) {
     this.id = id++;
     this.renderWatcher = options;
-    this.getter = exprOrFn;
+
+    if (typeof exprOrFn === "string") {
+      this.getter = function () {
+        return vm[exprOrFn];
+      };
+    } else {
+      this.getter = exprOrFn;
+    }
+
     this.deps = [];
     this.depsId = new Set();
     this.lazy = options.lazy;
+    this.cb = cb;
     this.dirty = this.lazy;
     this.vm = vm;
-    this.lazy ? undefined : this.get();
+
+    this.user = options.user; // 标识是否是用户自己的watcher
+
+    this.value = this.lazy ? undefined : this.get();
   }
   addDep(dep) {
     let id = dep.id;
@@ -52,7 +64,11 @@ class Watcher {
     }
   }
   run() {
-    this.get();
+    let oldValue = this.value;
+    let newValue = this.get();
+    if (this.user) {
+      this.cb.call(this.vm, newValue, oldValue);
+    }
   }
 }
 

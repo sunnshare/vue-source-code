@@ -9,3 +9,4 @@
 - [x] nextTick 实现原理
 - [x] mixin 实现原理
 - [x] computed 实现原理
+- [x] watch 实现原理
