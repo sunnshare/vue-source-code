@@ -37,3 +37,10 @@ export function mountComponent(vm, el) {
 
   // 3.插入到el元素中
 }
+
+export function callHook(vm, hook) {
+  const handles = vm.$options[hook];
+  if (handles) {
+    handles.forEach((handles) => handles.call(vm));
+  }
+}

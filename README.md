@@ -7,3 +7,4 @@
 - [x] render 函数生成虚拟 DOM，虚拟 DOM 转为真实 DOM
 - [x] 依赖收集实现原理
 - [x] nextTick 实现原理
+- [x] mixin 实现原理
