@@ -8,3 +8,4 @@
 - [x] 依赖收集实现原理
 - [x] nextTick 实现原理
 - [x] mixin 实现原理
+- [x] computed 实现原理
