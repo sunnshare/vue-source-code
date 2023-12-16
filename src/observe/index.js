@@ -2,6 +2,8 @@ import { newArrayProto } from "./array";
 import Dep from "./dep";
 class Observer {
   constructor(data) {
+    this.dep = new Dep();
+
     Object.defineProperty(data, "__ob__", {
       value: this,
       enumerable: false, // 将 __ob__ 变成不可枚举对象，循环时找不到
@@ -26,13 +28,30 @@ class Observer {
   }
 }
 
+function dependArray(value) {
+  for (let i = 0; i < value.length; i++) {
+    let current = value[i];
+    current.__ob__ && current.__ob__.dep.depend();
+    if (Array.isArray(current)) {
+      dependArray(current);
+    }
+  }
+}
+
 export function difineReactive(target, key, value) {
-  observe(value); // 递归，深层属性劫持
+  let childOb = observe(value); // 递归，深层属性劫持
   let dep = new Dep();
   Object.defineProperty(target, key, {
     get() {
       if (Dep.target) {
         dep.depend(); // 让属性收集器记住当前   Watcher
+        if (childOb) {
+          childOb.dep.depend(); // 让数组和对象本身也实现依赖收集
+
+          if (Array.isArray(value)) {
+            dependArray(value);
+          }
+        }
       }
       return value;
     },
