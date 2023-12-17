@@ -11,3 +11,4 @@
 - [x] computed 实现原理
 - [x] watch 实现原理
 - [x] 实现 diff 算法
+- [x] 组件实现原理
