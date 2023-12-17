@@ -10,3 +10,4 @@
 - [x] mixin 实现原理
 - [x] computed 实现原理
 - [x] watch 实现原理
+- [x] 实现 diff 算法
